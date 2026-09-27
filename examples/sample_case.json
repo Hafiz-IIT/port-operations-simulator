@@ -1,0 +1,20 @@
+{
+  "berths": 2,
+  "vessels": [
+    {
+      "name": "A",
+      "arrival_hour": 0,
+      "service_hours": 4
+    },
+    {
+      "name": "B",
+      "arrival_hour": 1,
+      "service_hours": 2
+    },
+    {
+      "name": "C",
+      "arrival_hour": 2,
+      "service_hours": 3
+    }
+  ]
+}
