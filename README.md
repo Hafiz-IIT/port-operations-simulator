@@ -42,3 +42,7 @@ Current tests compare single vs parallel berth behavior and enforce non-overlap;
 
 ## License
 MIT.
+
+## Extended implementation
+
+- `priority_scheduler.py` adds non-preemptive priority scheduling for vessels waiting for a berth.
