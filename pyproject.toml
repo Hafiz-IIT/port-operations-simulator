@@ -1,0 +1,14 @@
+[build-system]
+requires=["setuptools>=68"]
+build-backend="setuptools.build_meta"
+
+[project]
+name="port-operations-simulator"
+version="0.1.0"
+description="Discrete berth-allocation simulator for vessel arrivals, service times, queueing delay and berth utilization."
+requires-python=">=3.10"
+license={text="MIT"}
+authors=[{name="Syed Hafiz Ali"}]
+
+[tool.setuptools]
+py-modules=["port_operations_simulator"]

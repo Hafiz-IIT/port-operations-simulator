@@ -1,34 +1,44 @@
 # Port Operations Simulator
 
-> **A transparent berth-allocation baseline for vessel arrivals, queues, service time, and waiting-time analysis.**
+> Discrete berth-allocation simulator for vessel arrivals, service times, queueing delay and berth utilization.
 
-Port congestion and berth allocation affect downstream logistics, but a credible project should start with a reproducible scheduling baseline before claiming a real port digital twin. This repo models the queueing/scheduling core.
+## Status
+**Reproducible simulation/research prototype** with executable code, tests, CI, architecture, evaluation and roadmap documentation.
 
-## Implemented
-- vessel arrival/service model
-- configurable berth count
-- earliest-available berth assignment
-- start/finish times
-- per-vessel wait time
-- average/max wait summary
+## Problem
+Port congestion emerges from arrival timing, limited berth capacity and service duration. A small simulator makes queueing effects and allocation policies measurable.
 
-## Run
+## Architecture
+Vessel arrival stream → berth availability state → earliest-available allocation → service completion → waiting-time/utilization summary.
+
+## Quick start
 ```bash
 python -m unittest discover -s tests -v
 python port_operations_simulator.py
 ```
 
-## Repository map
-`port_operations_simulator.py` core · `tests/` tests · `examples/` fixtures · `docs/architecture.md` design · `docs/research-agenda.md` experiments · `STATUS.md` claims · `CITATION.cff` citation
-
-## Pipeline
-**vessels → arrival ordering → berth availability → assignment → service schedule → wait metrics**
+## Implemented
+- Vessel model
+- Multiple berth state
+- Earliest-available allocation
+- Wait-time calculation
+- Assignment records
+- Aggregate wait summary
+- Tests and CI
 
 ## Research lineage
-This comes from the older port optimization, scheduling, logistics digital twin, cargo allocation, and EXIM operations themes.
+- *Smart Urban Infrastructures: AI-Enabled City Optimization*
+- *Multi-Agent Coordination via Linear Statistical Models and Reinforcement Learning*
+- *Reinforcement-Driven Optimization in Industrial AI*
 
-## Evaluation direction
-Compare berth counts, arrival bursts, service-time distributions, and alternative scheduling heuristics. Later add priorities or stochastic delays rather than presenting the greedy baseline as optimal.
+## Evaluation
+Current tests compare single vs parallel berth behavior and enforce non-overlap; later experiments can benchmark alternative scheduling policies.
 
-## Maturity
-**Research prototype.** Synthetic scheduling only. No real port/AIS feed, terminal operating system, customs state, crane constraints, or operational optimization claim.
+## Limitations
+- Greedy deterministic scheduler
+- No crane/tide/channel constraints
+- No AIS or real port data
+- No production terminal integration
+
+## License
+MIT.
