@@ -1,48 +1,47 @@
 # Port Operations Simulator
 
-> Discrete berth-allocation simulator for vessel arrivals, service times, queueing delay and berth utilization.
+<p align="center"><strong>Berth Allocation, Queueing and Port Congestion</strong><br/><sub>A discrete-event simulation sandbox for measurable berth-policy experiments.</sub></p>
 
-## Status
-**Reproducible simulation/research prototype** with executable code, tests, CI, architecture, evaluation and roadmap documentation.
+<p align="center"><img src="https://img.shields.io/badge/status-reproducible%20simulation-blue" alt="Simulation"/> <img src="https://img.shields.io/badge/focus-berth%20allocation-orange" alt="Berth allocation"/></p>
 
-## Problem
-Port congestion emerges from arrival timing, limited berth capacity and service duration. A small simulator makes queueing effects and allocation policies measurable.
+## Question
 
-## Architecture
-Vessel arrival stream → berth availability state → earliest-available allocation → service completion → waiting-time/utilization summary.
+**How do vessel arrivals, service duration and limited berth capacity interact to create waiting time?**
 
-## Quick start
-```bash
-python -m unittest discover -s tests -v
-python port_operations_simulator.py
+```
+Arrival stream
+   ↓
+Berth availability
+   ↓
+Allocation policy
+   ↓
+Service completion
+   ↓
+Waiting time + utilization
 ```
 
+## Try it
+
+```bash
+python port_operations_simulator.py
+python -m unittest discover -s tests -v
+```
+
+`priority_scheduler.py` adds a second policy: non-preemptive priority scheduling among vessels already waiting.
+
 ## Implemented
-- Vessel model
-- Multiple berth state
-- Earliest-available allocation
-- Wait-time calculation
-- Assignment records
-- Aggregate wait summary
-- Tests and CI
 
-## Research lineage
-- *Smart Urban Infrastructures: AI-Enabled City Optimization*
-- *Multi-Agent Coordination via Linear Statistical Models and Reinforcement Learning*
-- *Reinforcement-Driven Optimization in Industrial AI*
+- vessel state
+- multiple berths
+- earliest-available allocation
+- waiting-time calculation
+- berth assignment records
+- priority scheduling
+- utilization summaries
+- deterministic CI
 
-## Evaluation
-Current tests compare single vs parallel berth behavior and enforce non-overlap; later experiments can benchmark alternative scheduling policies.
+## Research boundary
 
-## Limitations
-- Greedy deterministic scheduler
-- No crane/tide/channel constraints
-- No AIS or real port data
-- No production terminal integration
+Simulation only. Results are not calibrated to a particular port or claimed as operational recommendations.
 
-## License
-MIT.
-
-## Extended implementation
-
-- `priority_scheduler.py` adds non-preemptive priority scheduling for vessels waiting for a berth.
+Related: [Logistics Optimization Lab](https://github.com/Hafiz-IIT/logistics-optimization-lab) · [Multi-Agent Logistics Simulator](https://github.com/Hafiz-IIT/multi-agent-logistics-sim)
