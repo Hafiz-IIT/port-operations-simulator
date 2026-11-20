@@ -13,6 +13,10 @@ class PrioritySchedulerTests(unittest.TestCase):
         names = [a.vessel for a in schedule_single_berth_priority(vessels)]
         self.assertEqual(names, ["A", "C", "B"])
 
+    def test_positive_service_duration_below_time_resolution_is_rejected(self):
+        with self.assertRaises(OverflowError):
+            schedule_single_berth_priority([PriorityVessel("A", 1e16, 1.0)])
+
     def test_does_not_start_before_arrival(self):
         assignment = schedule_single_berth_priority(
             [PriorityVessel("A", 10, 2, priority=1)]

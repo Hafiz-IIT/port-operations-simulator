@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+import math
 
 from port_operations_simulator import BerthAssignment
 
@@ -19,7 +20,23 @@ def schedule_single_berth_priority(vessels: list[PriorityVessel]) -> list[BerthA
     Higher numeric priority wins among vessels that have already arrived.
     If no vessel is waiting, time advances to the next arrival.
     """
+    if not isinstance(vessels, list) or any(not isinstance(vessel, PriorityVessel) for vessel in vessels):
+        raise ValueError("vessels must be a list of PriorityVessel values")
     pending = list(vessels)
+    for vessel in pending:
+        if not isinstance(vessel.name, str) or not vessel.name.strip():
+            raise ValueError("vessel name must be non-empty")
+        if (isinstance(vessel.arrival_hour, bool) or not isinstance(vessel.arrival_hour, (int, float))
+                or not math.isfinite(vessel.arrival_hour)):
+            raise ValueError("arrival_hour must be finite")
+        if (isinstance(vessel.service_hours, bool) or not isinstance(vessel.service_hours, (int, float))
+                or not math.isfinite(vessel.service_hours) or vessel.service_hours <= 0):
+            raise ValueError("service_hours must be finite and positive")
+        if isinstance(vessel.priority, bool) or not isinstance(vessel.priority, int):
+            raise ValueError("priority must be an integer")
+    names = [v.name for v in pending]
+    if len(names) != len(set(names)):
+        raise ValueError("vessel names must be unique")
     current = 0.0
     assignments: list[BerthAssignment] = []
 
@@ -35,6 +52,10 @@ def schedule_single_berth_priority(vessels: list[PriorityVessel]) -> list[BerthA
         )
         start = max(current, vessel.arrival_hour)
         finish = start + vessel.service_hours
+        if not math.isfinite(finish):
+            raise OverflowError("berth finish time is not finite")
+        if finish <= start:
+            raise OverflowError("service interval is below floating-point time resolution")
         assignments.append(
             BerthAssignment(
                 vessel=vessel.name,
