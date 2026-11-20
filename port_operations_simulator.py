@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from math import isfinite
 
 
 @dataclass(frozen=True)
@@ -20,8 +21,18 @@ class BerthAssignment:
 
 
 def schedule(vessels: list[Vessel], berths: int) -> list[BerthAssignment]:
-    if berths < 1:
-        raise ValueError("berths must be >= 1")
+    if isinstance(berths, bool) or not isinstance(berths, int) or berths < 1:
+        raise ValueError("berths must be a positive integer")
+    names = [v.name for v in vessels]
+    if len(names) != len(set(names)):
+        raise ValueError("vessel names must be unique")
+    for vessel in vessels:
+        if not isinstance(vessel.name, str) or not vessel.name.strip():
+            raise ValueError("vessel name must be non-empty")
+        if not isfinite(float(vessel.arrival_hour)):
+            raise ValueError("arrival_hour must be finite")
+        if not isfinite(float(vessel.service_hours)) or vessel.service_hours <= 0:
+            raise ValueError("service_hours must be finite and positive")
     available = [0.0] * berths
     assignments: list[BerthAssignment] = []
 
