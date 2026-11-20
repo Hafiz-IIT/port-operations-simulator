@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from math import isfinite
 
 from port_operations_simulator import BerthAssignment
 
@@ -20,6 +21,18 @@ def schedule_single_berth_priority(vessels: list[PriorityVessel]) -> list[BerthA
     If no vessel is waiting, time advances to the next arrival.
     """
     pending = list(vessels)
+    names = [v.name for v in pending]
+    if len(names) != len(set(names)):
+        raise ValueError("vessel names must be unique")
+    for vessel in pending:
+        if not isinstance(vessel.name, str) or not vessel.name.strip():
+            raise ValueError("vessel name must be non-empty")
+        if not isfinite(float(vessel.arrival_hour)):
+            raise ValueError("arrival_hour must be finite")
+        if not isfinite(float(vessel.service_hours)) or vessel.service_hours <= 0:
+            raise ValueError("service_hours must be finite and positive")
+        if isinstance(vessel.priority, bool) or not isinstance(vessel.priority, int):
+            raise ValueError("priority must be an integer")
     current = 0.0
     assignments: list[BerthAssignment] = []
 
