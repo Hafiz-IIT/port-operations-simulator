@@ -32,6 +32,10 @@ class PortSimulatorTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             schedule([Vessel("A", 0, float("nan"))], berths=1)
 
+    def test_positive_service_duration_below_time_resolution_is_rejected(self):
+        with self.assertRaises(OverflowError):
+            schedule([Vessel("A", 1e16, 1.0)], berths=1)
+
     def test_duplicate_vessel_names_are_rejected(self):
         with self.assertRaises(ValueError):
             schedule([Vessel("A", 0, 1), Vessel("A", 2, 1)], 1)
