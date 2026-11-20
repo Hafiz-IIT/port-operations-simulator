@@ -26,6 +26,12 @@ class PortSimulatorTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             Vessel("A", 0, -1)
 
+    def test_boolean_and_nonfinite_times_are_rejected(self):
+        with self.assertRaises(ValueError):
+            schedule([Vessel("A", True, 1)], berths=1)
+        with self.assertRaises(ValueError):
+            schedule([Vessel("A", 0, float("nan"))], berths=1)
+
     def test_duplicate_vessel_names_are_rejected(self):
         with self.assertRaises(ValueError):
             schedule([Vessel("A", 0, 1), Vessel("A", 2, 1)], 1)
