@@ -23,16 +23,20 @@ class BerthAssignment:
 def schedule(vessels: list[Vessel], berths: int) -> list[BerthAssignment]:
     if isinstance(berths, bool) or not isinstance(berths, int) or berths < 1:
         raise ValueError("berths must be a positive integer")
-    names = [v.name for v in vessels]
-    if len(names) != len(set(names)):
-        raise ValueError("vessel names must be unique")
     for vessel in vessels:
         if not isinstance(vessel.name, str) or not vessel.name.strip():
             raise ValueError("vessel name must be non-empty")
-        if not isfinite(float(vessel.arrival_hour)):
+        if (isinstance(vessel.arrival_hour, bool) or
+                not isinstance(vessel.arrival_hour, (int, float)) or
+                not isfinite(vessel.arrival_hour)):
             raise ValueError("arrival_hour must be finite")
-        if not isfinite(float(vessel.service_hours)) or vessel.service_hours <= 0:
+        if (isinstance(vessel.service_hours, bool) or
+                not isinstance(vessel.service_hours, (int, float)) or
+                not isfinite(vessel.service_hours) or vessel.service_hours <= 0):
             raise ValueError("service_hours must be finite and positive")
+    names = [v.name for v in vessels]
+    if len(names) != len(set(names)):
+        raise ValueError("vessel names must be unique")
     available = [0.0] * berths
     assignments: list[BerthAssignment] = []
 
