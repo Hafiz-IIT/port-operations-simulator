@@ -54,6 +54,8 @@ def schedule_single_berth_priority(vessels: list[PriorityVessel]) -> list[BerthA
         finish = start + vessel.service_hours
         if not math.isfinite(finish):
             raise OverflowError("berth finish time is not finite")
+        if finish <= start:
+            raise OverflowError("service interval is below floating-point time resolution")
         assignments.append(
             BerthAssignment(
                 vessel=vessel.name,
